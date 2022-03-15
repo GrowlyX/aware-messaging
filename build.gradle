@@ -1,0 +1,53 @@
+plugins {
+    id "maven-publish"
+    id "application"
+    id "com.github.johnrengelman.shadow" version "7.1.2"
+    id "org.jetbrains.kotlin.jvm" version "1.6.10"
+}
+
+group "gg.scala.messaging"
+version "1.0.3"
+
+application {
+    mainClassName "gg.scala.messaging.Messenger"
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.6.10"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.6.10"
+
+    implementation 'com.google.code.gson:gson:2.9.0'
+    implementation 'com.github.GrowlyX:aware:8642b1a677'
+}
+
+compileKotlin {
+    kotlinOptions.javaParameters = true
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+shadowJar {
+    archiveClassifier.set("")
+
+    exclude "**/*.kotlin_metadata"
+    exclude "**/*.kotlin_builtins"
+    exclude "META-INF/"
+
+    archiveFileName = "Messenger.jar"
+}
+
+publishing {
+    publications {
+        shadow(MavenPublication) { publication ->
+            from components.kotlin
+        }
+    }
+}
+
+tasks.build.dependsOn(shadowJar)
