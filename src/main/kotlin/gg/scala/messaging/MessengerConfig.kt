@@ -8,15 +8,15 @@ import java.util.*
  */
 object MessengerConfig
 {
-    private val properties by lazy {
-        val props = Properties()
-        props.load(
-            this::class.java.classLoader
-                .getResourceAsStream("redis.properties")
-        )
+    private val properties = Properties()
+        .apply {
+            val resource = this::class.java
+                .getResourceAsStream(
+                    "redis.properties"
+                )
 
-        return@lazy props
-    }
+            load(resource)
+        }
 
     fun get(key: String): String =
         properties.getProperty(key)!!

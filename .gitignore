@@ -4,7 +4,7 @@
 *.iws
 
 # Aware
-*.conf
+**/redis.properties
 
 # Mac
 .DS_Store
